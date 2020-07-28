@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "559181532310",
+    "firebase_url": "https://scribble-e9824.firebaseio.com",
+    "project_id": "scribble-e9824",
+    "storage_bucket": "scribble-e9824.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559181532310:android:8c069be23c0734774d86b7",
+        "android_client_info": {
+          "package_name": "com.ayushidoshi56.scribble"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "559181532310-bqeldi128f01aq7q1maqae2dcsdt1ve5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS6MRIyTnL9-r32u0us8l2bck6-K8h_-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "559181532310-bqeldi128f01aq7q1maqae2dcsdt1ve5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
