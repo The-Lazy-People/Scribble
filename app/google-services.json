@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "559181532310-k8ba88uptkitr4ets725isuicjd47t5d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ayushidoshi56.scribble",
+            "certificate_hash": "671419aca386c2468c7e3073473e980c7cda1c9e"
+          }
+        },
+        {
           "client_id": "559181532310-bqeldi128f01aq7q1maqae2dcsdt1ve5.apps.googleusercontent.com",
           "client_type": 3
         }

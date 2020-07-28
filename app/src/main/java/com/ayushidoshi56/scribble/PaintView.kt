@@ -1,20 +1,18 @@
 package com.ayushidoshi56.scribble
 
-import android.app.ActionBar
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
-import android.os.Parcel
-import android.os.Parcelable
 import android.view.MotionEvent
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import android.view.View as View1
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 var brush = Paint()
@@ -39,44 +37,43 @@ class PaintView(context: Context?): android.view.View(context) {
     }
     public fun co(x:Float,y:Float)
     {
-        path.lineTo(x+4, y+4)
+        path.lineTo(x, y)
     }
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        var pointX = event.x
-        var pointY = event.y
-        var data= mutableListOf<Float>()
-        data.add(pointX)
-        data.add(pointY)
-        database = FirebaseDatabase.getInstance()
-        postReference=database.reference
+        val pointX = event.x
+        val pointY = event.y
+        database = Firebase.database
+        postReference = database.reference.child("data")
 
         when(event.action)
         {
             MotionEvent.ACTION_DOWN -> {
-                path.moveTo(pointX, pointY);
-                data.add(0f)
-                postReference.child("data").push().setValue(data)
+                path.moveTo(pointX, pointY)
+                uploadToDatabase(pointX , pointY , 0)
                 return true
             }
             MotionEvent.ACTION_UP -> {
-                path.moveTo(pointX, pointY);
-                data.add(1f)
-                postReference.child("data").push().setValue(data)
+                path.moveTo(pointX, pointY)
+                uploadToDatabase(pointX , pointY , 1)
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
                 path.lineTo(pointX, pointY)
-                data.add(2f)
-                postReference.child("data").push().setValue(data)
+                uploadToDatabase(pointX , pointY , 2)
             }
             else -> return false
         }
-       postInvalidate()
+        postInvalidate()
         return false
     }
 
     override fun onDraw(canvas: Canvas)
     {
         canvas.drawPath(path,brush)
+    }
+
+    private fun uploadToDatabase(pointX:Float, pointY:Float , type: Int) {
+        val info = Information(pointX, pointY, type)
+        postReference.push().setValue(info)
     }
 }

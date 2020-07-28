@@ -2,8 +2,11 @@ package com.ayushidoshi56.scribble
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
@@ -11,16 +14,23 @@ class MainActivity : AppCompatActivity() {
     private lateinit var childEventListener: ChildEventListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        val paintview=PaintView(this)
-        setContentView(paintview)
-        database= FirebaseDatabase.getInstance().reference
+        val paintView = PaintView(this)
+        setContentView(paintView)
+
+
+        database= Firebase.database.reference
         postReference = database.child("data")
+
         childEventListener = object : ChildEventListener{
 
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-
+                val info = snapshot.getValue<Information>()
+                if(info?.type == 0){
+                    paintView.start(info.pointX , info.pointY)
+                }else{
+                    paintView.co(info!!.pointX , info.pointY)
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -40,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+        postReference.addChildEventListener(childEventListener)
 //        paintview.co(100f,105f)
 //        paintview.co(201f,701f)
 //        paintview.co(302f,603f)
