@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         val paintView = PaintView(this)
         setContentView(paintView)
 
-
+        paintView.end(0f,0f)
         database= Firebase.database.reference
         postReference = database.child("data")
 

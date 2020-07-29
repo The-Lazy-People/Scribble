@@ -22,6 +22,8 @@ lateinit var params:LinearLayout.LayoutParams
 class PaintView(context: Context?): android.view.View(context) {
     private lateinit var database: FirebaseDatabase
     private lateinit var postReference: DatabaseReference
+    var canvasHeight=1
+    var canvasWidth=1
     init{
         brush.isAntiAlias =true
         brush.setColor(Color.BLACK)
@@ -33,15 +35,15 @@ class PaintView(context: Context?): android.view.View(context) {
     }
     public fun start(x:Float,y:Float)
     {
-        path.moveTo(x, y);
+        path.moveTo(x*canvasWidth, y*canvasHeight);
     }
     public fun co(x:Float,y:Float)
     {
-        path.lineTo(x, y)
+        path.lineTo(x*canvasWidth, y*canvasHeight)
     }
     public fun end(x:Float,y:Float)
     {
-        path.lineTo(x, y)
+        path.lineTo(x*canvasWidth, y*canvasHeight)
         postInvalidate()
     }
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -50,21 +52,22 @@ class PaintView(context: Context?): android.view.View(context) {
         database = Firebase.database
         postReference = database.reference.child("data")
 
+
         when(event.action)
         {
             MotionEvent.ACTION_DOWN -> {
                 path.moveTo(pointX, pointY)
-                uploadToDatabase(pointX , pointY , 0)
+                uploadToDatabase(pointX/canvasWidth , pointY/canvasHeight , 0)
                 return true
             }
             MotionEvent.ACTION_UP -> {
                 path.moveTo(pointX, pointY)
-                uploadToDatabase(pointX , pointY , 1)
+                uploadToDatabase(pointX/canvasWidth , pointY/canvasHeight , 1)
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
                 path.lineTo(pointX, pointY)
-                uploadToDatabase(pointX , pointY , 2)
+                uploadToDatabase(pointX/canvasWidth , pointY/canvasHeight , 2)
             }
             else -> return false
         }
@@ -75,6 +78,8 @@ class PaintView(context: Context?): android.view.View(context) {
     override fun onDraw(canvas: Canvas)
     {
         canvas.drawPath(path,brush)
+        canvasHeight=canvas.height
+        canvasWidth=canvas.width
     }
 
     private fun uploadToDatabase(pointX:Float, pointY:Float , type: Int) {
