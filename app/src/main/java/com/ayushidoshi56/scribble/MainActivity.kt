@@ -2,6 +2,7 @@ package com.ayushidoshi56.scribble
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -26,10 +27,14 @@ class MainActivity : AppCompatActivity() {
 
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val info = snapshot.getValue<Information>()
+                Log.i("DOWNLOADORNOT",info!!.type.toString()+" "+info.pointX.toString()+" "+info.pointY+toString())
                 if(info?.type == 0){
                     paintView.start(info.pointX , info.pointY)
-                }else{
+                }else if(info?.type == 2){
                     paintView.co(info!!.pointX , info.pointY)
+                }
+                else{
+                    paintView.end(info!!.pointX , info.pointY)
                 }
             }
 

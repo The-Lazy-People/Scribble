@@ -39,6 +39,11 @@ class PaintView(context: Context?): android.view.View(context) {
     {
         path.lineTo(x, y)
     }
+    public fun end(x:Float,y:Float)
+    {
+        path.lineTo(x, y)
+        postInvalidate()
+    }
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val pointX = event.x
         val pointY = event.y
